@@ -23,11 +23,11 @@ class OrderSerializer(serializers.ModelSerializer):
         model = Order
         fields = ['id', 'user_id', 'products', 'product_ids', 'total']
 
-    def get_total(self, instance):
-        return sum(product.price for product in instance.product.all())
+    def get_total(self, obj):
+        return sum(p.price for p in obj.product.all())
 
     def create(self, validated_data):
-        products = validated_data.pop('product')
+        products = validated_data.pop('product', [])
         user = validated_data.pop('user')
         order = Order.objects.create(user=user)
         order.product.set(products)
