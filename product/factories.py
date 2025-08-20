@@ -1,19 +1,10 @@
+# product/factories.py
 import factory
 from product.models import Product, Category
-
-class CategoryFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = Category
-
-    title = factory.Faker("word")
-    slug = factory.Faker("slug", unique=True)
-    description = factory.Faker("sentence")
-    active = True
 
 class ProductFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Product
-        skip_postgeneration_save = True
 
     title = factory.Faker("word")
     description = factory.Faker("sentence")
@@ -22,6 +13,13 @@ class ProductFactory(factory.django.DjangoModelFactory):
 
     @factory.post_generation
     def categories(self, create, extracted, **kwargs):
+        """
+        Adiciona categorias após criar o produto.
+        Exemplo de uso:
+            cat1 = Category.objects.create(title="Cat1", slug="cat1")
+            cat2 = Category.objects.create(title="Cat2", slug="cat2")
+            ProductFactory(categories=[cat1, cat2])
+        """
         if not create or not extracted:
             return
         for category in extracted:

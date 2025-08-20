@@ -24,8 +24,9 @@ SECRET_KEY = 'django-insecure-x_zu!h*_clnjuv2#ftp2h6$f(4stjy=*)06d!*&-insg@fdzf9
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+APPEND_SLASH = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
 
 
 # Application definition
@@ -40,7 +41,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'order'	,
     'product',
-    'django_extensions'
+    'django_extensions',
+    'debug_toolbar',
 
 ]
 
@@ -52,6 +54,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
+]
+INTERNAL_IPS = [
+    '127.0.0.1'
 ]
 
 ROOT_URLCONF = 'bookstore.urls'
@@ -115,7 +121,10 @@ USE_I18N = True
 
 USE_TZ = True
 
-APPEND_SLASH = True
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS' : 'rest_framework.pagination.PageNumberPagination', "PAGE_SIZE": 10
+}
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
