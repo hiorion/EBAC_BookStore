@@ -1,5 +1,3 @@
-# product/factories.py
-
 import factory
 from product.models import Product, Category
 
@@ -8,19 +6,18 @@ class CategoryFactory(factory.django.DjangoModelFactory):
         model = Category
 
     title = factory.Faker("word")
-    slug = factory.Faker("slug")
+    slug = factory.Faker("slug", unique=True)
     description = factory.Faker("sentence")
     active = True
-
 
 class ProductFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Product
-        skip_postgeneration_save = True  # <-- Adicione isso para remover o warning
+        skip_postgeneration_save = True
 
     title = factory.Faker("word")
     description = factory.Faker("sentence")
-    price = factory.Faker("pydecimal", left_digits=3, right_digits=2, positive=True)
+    price = factory.Faker("pydecimal", left_digits=5, right_digits=2, positive=True)
     active = True
 
     @factory.post_generation
